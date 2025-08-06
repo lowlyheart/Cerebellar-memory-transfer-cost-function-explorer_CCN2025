@@ -49,12 +49,16 @@
   </style>
 </head>
 <body>
-
-  <!-- Embed the actual content of cerebellar-cost-app.html below -->
-  <!-- Copy and paste the entire contents of cerebellar-cost-app.html here -->
+  
   <!-- START OF EXPLORER APP -->
   <div id="explorer-container">
-    <body>
+    <!-- explorer HTML 전체 삽입 -->
+    <div class="container">
+      <h1>Cerebellar Memory Transfer Cost Function Explorer</h1>
+      <p class="subtitle">Based on: A Normative Principle Governing Memory Transfer in Cerebellar Motor Learning</p>
+      <div class="formula">C<sub>i</sub>(n) = B<sub>i</sub>² + V<sub>i</sub>(n) + O<sub>i</sub> where V<sub>i</sub>(n) = k<sub>i</sub>/n</div>
+      <!-- explorer 코드 생략: chart.js 기반 시뮬레이터 UI 및 script 코드가 들어가는 위치 -->
+      <body>
     <div class="container">
         <h1>Cerebellar Memory Transfer Cost Function Explorer</h1>
         <p class="subtitle">Based on: A Normative Principle Governing Memory Transfer in Cerebellar Motor Learning</p>
@@ -335,7 +339,12 @@
         // Initialize
         window.addEventListener('load', initChart);
     </script>
-</body><!-- The full content of cerebellar-cost-app.html should go here -->
+</body>
+      <!-- 실제 사용 시 cerebellar-cost-app.html의 <body> 내부 전체 코드 삽입 -->
+    </div>
+    <script>
+      // Chart.js 기반 explorer 기능 작동을 위한 자바스크립트 코드 삽입부
+    </script>
   </div>
   <!-- END OF EXPLORER APP -->
 
