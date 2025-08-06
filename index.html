@@ -43,29 +43,25 @@
       padding: 2rem;
       text-align: center;
     }
-    .artifact-iframe {
-      width: 100%;
-      max-width: 1000px;
-      height: 800px;
-      border: none;
-      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-    }
     .artifact-note {
       text-align: center;
       font-size: 0.95rem;
       color: #333;
       margin-top: 1rem;
     }
+    iframe.local-app {
+      width: 100%;
+      max-width: 1000px;
+      height: 800px;
+      border: none;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    }
   </style>
 </head>
 <body>
 
   <div class="content">
-    <iframe
-      class="artifact-iframe"
-      src="https://claude.ai/public/artifacts/3affd738-47ef-480d-b137-7489cc8ec469"
-      allowfullscreen
-    ></iframe>
+    <iframe class="local-app" src="cerebellar-cost-app.html"></iframe>
     <div class="artifact-note">
       This interactive explorer is based on the model and findings presented in the publication below.
     </div>
@@ -77,13 +73,13 @@
         A normative principle governing memory transfer in cerebellar motor learning
       </a>
     </div>
-    <div class="banner-subtitle">
-      Published in <em>Nature Communications</em>, 01 July 2025
-    </div>
     <div class="banner-authors">
       Hyojin Bae<sup>1,2†</sup>, Jewoo Seo<sup>2†</sup>, Chang-Eop Kim<sup>1*</sup>, Sang Jeong Kim<sup>2*</sup><br/>
       <sup>1</sup>Department of Physiology, Gachon University College of Korean Medicine, Seongnam, Korea<br/>
       <sup>2</sup>Neuroscience Research Institute, Seoul National University Medical Research Center, Seoul, Korea
+    </div>
+    <div class="banner-subtitle">
+      Published in <em>Nature Communications</em>, 01 July 2025
     </div>
   </div>
 
