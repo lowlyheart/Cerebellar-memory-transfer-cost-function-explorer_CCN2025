@@ -99,6 +99,9 @@
         .n-selector {
             text-align: center;
             margin-bottom: 20px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
         }
         .n-selector label {
             font-weight: bold;
@@ -333,7 +336,7 @@
                     const x = xAxis.getPixelForValue(currentN);
                     
                     ctx.save();
-                    ctx.strokeStyle = 'red';
+                    ctx.strokeStyle = #00acc1;
                     ctx.lineWidth = 2;
                     ctx.setLineDash([5, 5]);
                     ctx.beginPath();
@@ -394,7 +397,7 @@
                                     type: 'line',
                                     xMin: 10,
                                     xMax: 10,
-                                    borderColor: 'red',
+                                    borderColor: #00acc1,
                                     borderWidth: 2,
                                     borderDash: [5, 5]
                                 }
