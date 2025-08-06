@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cerebellar Memory Transfer Cost Function Explorer</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        .control-group {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .control-group h3 {
+            margin: 0 0 15px 0;
+            color: #444;
+            font-size: 18px;
+        }
+        .slider-container {
+            margin-bottom: 15px;
+        }
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 14px;
+            color: #555;
+        }
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .complex-slider::-webkit-slider-track {
+            background: linear-gradient(to right, #e3f2fd, #1976d2);
+        }
+        .complex-slider::-webkit-slider-thumb {
+            background: #1976d2;
+        }
+        .simple-slider::-webkit-slider-track {
+            background: linear-gradient(to right, #ffe0e0, #d32f2f);
+        }
+        .simple-slider::-webkit-slider-thumb {
+            background: #d32f2f;
+        }
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin-bottom: 30px;
+        }
+        .n-selector {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .n-selector label {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        #nSlider {
+            width: 300px;
+            vertical-align: middle;
+        }
+        #nValue {
+            display: inline-block;
+            width: 50px;
+            text-align: center;
+            font-weight: bold;
+            color: #1976d2;
+        }
+        .analysis {
+            background: #e8f5e9;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        .analysis h3 {
+            margin: 0 0 10px 0;
+            color: #2e7d32;
+        }
+        .cost-display {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        .cost-item {
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .complex-cost {
+            background: #e3f2fd;
+            color: #1565c0;
+        }
+        .simple-cost {
+            background: #ffebee;
+            color: #c62828;
+        }
+        .preference {
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 10px;
+        }
+        .prefer-complex {
+            background: #1976d2;
+            color: white;
+        }
+        .prefer-simple {
+            background: #d32f2f;
+            color: white;
+        }
+        .formula {
+            text-align: center;
+            font-style: italic;
+            color: #666;
+            margin: 10px 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cerebellar Memory Transfer Cost Function Explorer</h1>
+        <p class="subtitle">Based on: A Normative Principle Governing Memory Transfer in Cerebellar Motor Learning</p>
+        
+        <div class="formula">C<sub>i</sub>(n) = B<sub>i</sub>² + V<sub>i</sub>(n) + O<sub>i</sub> where V<sub>i</sub>(n) = k<sub>i</sub>/n</div>
+        
+        <div class="controls">
+            <div class="control-group">
+                <h3>Complex System Parameters</h3>
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span>Bias² (B²<sub>c</sub>)</span>
+                        <span id="complexBiasValue">0.5</span>
+                    </div>
+                    <input type="range" id="complexBias" class="complex-slider" min="0" max="5" step="0.1" value="0.5">
+                </div>
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span>Variance Coefficient (k<sub>c</sub>)</span>
+                        <span id="complexVarianceValue">10</span>
+                    </div>
+                    <input type="range" id="complexVariance" class="complex-slider" min="0" max="50" step="1" value="10">
+                </div>
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span>Overhead (O<sub>c</sub>)</span>
+                        <span id="complexOverheadValue">3</span>
+                    </div>
+                    <input type="range" id="complexOverhead" class="complex-slider" min="0" max="10" step="0.1" value="3">
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <h3>Simple System Parameters</h3>
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span>Bias² (B²<sub>s</sub>)</span>
+                        <span id="simpleBiasValue">2</span>
+                    </div>
+                    <input type="range" id="simpleBias" class="simple-slider" min="0" max="5" step="0.1" value="2">
+                </div>
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span>Variance Coefficient (k<sub>s</sub>)</span>
+                        <span id="simpleVarianceValue">20</span>
+                    </div>
+                    <input type="range" id="simpleVariance" class="simple-slider" min="0" max="50" step="1" value="20">
+                </div>
+                <div class="slider-container">
+                    <div class="slider-label">
+                        <span>Overhead (O<sub>s</sub>)</span>
+                        <span id="simpleOverheadValue">1</span>
+                    </div>
+                    <input type="range" id="simpleOverhead" class="simple-slider" min="0" max="10" step="0.1" value="1">
+                </div>
+            </div>
+        </div>
+        
+        <div class="n-selector">
+            <label for="nSlider">Sample Size (n):</label>
+            <input type="range" id="nSlider" min="1" max="100" value="10">
+            <span id="nValue">10</span>
+        </div>
+        
+        <div class="chart-container">
+            <canvas id="costChart"></canvas>
+        </div>
+        
+        <div class="analysis">
+            <h3>Analysis at n = <span id="analysisN">10</span></h3>
+            <div class="cost-display">
+                <div class="cost-item complex-cost">
+                    <strong>Complex System Cost:</strong><br>
+                    Total: <span id="complexTotal">-</span><br>
+                    (Bias²: <span id="complexBiasCalc">-</span> + Variance: <span id="complexVarianceCalc">-</span> + Overhead: <span id="complexOverheadCalc">-</span>)
+                </div>
+                <div class="cost-item simple-cost">
+                    <strong>Simple System Cost:</strong><br>
+                    Total: <span id="simpleTotal">-</span><br>
+                    (Bias²: <span id="simpleBiasCalc">-</span> + Variance: <span id="simpleVarianceCalc">-</span> + Overhead: <span id="simpleOverheadCalc">-</span>)
+                </div>
+            </div>
+            <div class="preference" id="preferenceBox">
+                Calculating...
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let chart;
+        
+        function calculateCost(bias2, varianceCoeff, overhead, n) {
+            return bias2 + (varianceCoeff / n) + overhead;
+        }
+        
+        function updateChart() {
+            const complexBias2 = parseFloat(document.getElementById('complexBias').value);
+            const complexVarianceCoeff = parseFloat(document.getElementById('complexVariance').value);
+            const complexOverhead = parseFloat(document.getElementById('complexOverhead').value);
+            
+            const simpleBias2 = parseFloat(document.getElementById('simpleBias').value);
+            const simpleVarianceCoeff = parseFloat(document.getElementById('simpleVariance').value);
+            const simpleOverhead = parseFloat(document.getElementById('simpleOverhead').value);
+            
+            const currentN = parseInt(document.getElementById('nSlider').value);
+            
+            // Generate data points
+            const nValues = Array.from({length: 100}, (_, i) => i + 1);
+            const complexCosts = nValues.map(n => calculateCost(complexBias2, complexVarianceCoeff, complexOverhead, n));
+            const simpleCosts = nValues.map(n => calculateCost(simpleBias2, simpleVarianceCoeff, simpleOverhead, n));
+            
+            // Update chart
+            if (chart) {
+                chart.data.labels = nValues;
+                chart.data.datasets[0].data = complexCosts;
+                chart.data.datasets[1].data = simpleCosts;
+                chart.options.plugins.annotation.annotations.line1.xMin = currentN;
+                chart.options.plugins.annotation.annotations.line1.xMax = currentN;
+                chart.update();
+            }
+            
+            // Update analysis
+            const complexCostAtN = calculateCost(complexBias2, complexVarianceCoeff, complexOverhead, currentN);
+            const simpleCostAtN = calculateCost(simpleBias2, simpleVarianceCoeff, simpleOverhead, currentN);
+            const complexVarianceAtN = complexVarianceCoeff / currentN;
+            const simpleVarianceAtN = simpleVarianceCoeff / currentN;
+            
+            document.getElementById('analysisN').textContent = currentN;
+            document.getElementById('complexTotal').textContent = complexCostAtN.toFixed(3);
+            document.getElementById('complexBiasCalc').textContent = complexBias2.toFixed(3);
+            document.getElementById('complexVarianceCalc').textContent = complexVarianceAtN.toFixed(3);
+            document.getElementById('complexOverheadCalc').textContent = complexOverhead.toFixed(3);
+            
+            document.getElementById('simpleTotal').textContent = simpleCostAtN.toFixed(3);
+            document.getElementById('simpleBiasCalc').textContent = simpleBias2.toFixed(3);
+            document.getElementById('simpleVarianceCalc').textContent = simpleVarianceAtN.toFixed(3);
+            document.getElementById('simpleOverheadCalc').textContent = simpleOverhead.toFixed(3);
+            
+            const preferenceBox = document.getElementById('preferenceBox');
+            if (complexCostAtN < simpleCostAtN) {
+                preferenceBox.className = 'preference prefer-complex';
+                preferenceBox.innerHTML = `Complex System Preferred<br>
+                    <small>Lower cost by ${(simpleCostAtN - complexCostAtN).toFixed(3)}</small>`;
+            } else {
+                preferenceBox.className = 'preference prefer-simple';
+                preferenceBox.innerHTML = `Simple System Preferred<br>
+                    <small>Lower cost by ${(complexCostAtN - simpleCostAtN).toFixed(3)}</small>`;
+            }
+        }
+        
+        function initChart() {
+            const ctx = document.getElementById('costChart').getContext('2d');
+            
+            const plugin = {
+                id: 'customAnnotation',
+                beforeDraw: (chart) => {
+                    const ctx = chart.ctx;
+                    const xAxis = chart.scales.x;
+                    const yAxis = chart.scales.y;
+                    const currentN = parseInt(document.getElementById('nSlider').value);
+                    const x = xAxis.getPixelForValue(currentN);
+                    
+                    ctx.save();
+                    ctx.strokeStyle = 'red';
+                    ctx.lineWidth = 2;
+                    ctx.setLineDash([5, 5]);
+                    ctx.beginPath();
+                    ctx.moveTo(x, yAxis.top);
+                    ctx.lineTo(x, yAxis.bottom);
+                    ctx.stroke();
+                    ctx.restore();
+                }
+            };
+            
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Complex System',
+                        data: [],
+                        borderColor: '#1976d2',
+                        backgroundColor: 'rgba(25, 118, 210, 0.1)',
+                        borderWidth: 3,
+                        pointRadius: 0,
+                        pointHoverRadius: 5
+                    }, {
+                        label: 'Simple System',
+                        data: [],
+                        borderColor: '#d32f2f',
+                        backgroundColor: 'rgba(211, 47, 47, 0.1)',
+                        borderWidth: 3,
+                        pointRadius: 0,
+                        pointHoverRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'top',
+                            labels: {
+                                usePointStyle: true,
+                                padding: 20
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.parsed.y.toFixed(3);
+                                }
+                            }
+                        },
+                        annotation: {
+                            annotations: {
+                                line1: {
+                                    type: 'line',
+                                    xMin: 10,
+                                    xMax: 10,
+                                    borderColor: 'red',
+                                    borderWidth: 2,
+                                    borderDash: [5, 5]
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Sample Size (n)',
+                                font: {
+                                    size: 14
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Total Cost',
+                                font: {
+                                    size: 14
+                                }
+                            },
+                            grid: {
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        }
+                    }
+                },
+                plugins: [plugin]
+            });
+            
+            updateChart();
+        }
+        
+        // Event listeners
+        document.querySelectorAll('input[type="range"]').forEach(input => {
+            input.addEventListener('input', (e) => {
+                if (e.target.id === 'nSlider') {
+                    document.getElementById('nValue').textContent = e.target.value;
+                } else {
+                    const valueSpan = document.getElementById(e.target.id + 'Value');
+                    valueSpan.textContent = e.target.value;
+                }
+                updateChart();
+            });
+        });
+        
+        // Initialize
+        window.addEventListener('load', initChart);
+    </script>
+</body>
+</html>
